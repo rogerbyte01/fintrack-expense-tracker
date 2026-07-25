@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const expenseCategories = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Health', 'Education', 'Other'];
 const incomeCategories = ['Salary', 'Freelance', 'Investment', 'Gift', 'Other'];
 
-const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
+const TransactionForm = ({ onSubmit, editingTransaction, onCancel, forceType }) => {
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
@@ -18,8 +18,14 @@ const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
         ...editingTransaction,
         date: new Date(editingTransaction.date).toISOString().split('T')[0]
       });
+    } else if (forceType) {
+      setFormData(prev => ({
+        ...prev,
+        type: forceType,
+        category: forceType === 'income' ? incomeCategories[0] : expenseCategories[0]
+      }));
     }
-  }, [editingTransaction]);
+  }, [editingTransaction, forceType]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,37 +48,39 @@ const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
   const categories = formData.type === 'income' ? incomeCategories : expenseCategories;
 
   return (
-    <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-slate-800 rounded-2xl w-full max-w-md border border-slate-700 shadow-2xl animate-slide-up">
-        <div className="p-6 border-b border-slate-700 flex justify-between items-center">
-          <h2 className="text-xl font-semibold">
-            {editingTransaction ? 'Edit Transaction' : 'Add Transaction'}
+    <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+      <div className="bg-[var(--bg-card)] rounded-2xl w-full max-w-md border border-[var(--border-color)] shadow-2xl animate-slide-up text-[var(--text-primary)]">
+        <div className="p-6 border-b border-[var(--border-color)] flex justify-between items-center">
+          <h2 className="text-xl font-bold tracking-tight">
+            {editingTransaction ? 'Edit Transaction' : forceType === 'income' ? 'Add Income' : forceType === 'expense' ? 'Add Expense' : 'Add Transaction'}
           </h2>
-          <button onClick={onCancel} className="text-slate-400 hover:text-white transition-colors">
+          <button onClick={onCancel} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors text-lg">
             ✕
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div className="flex gap-4 p-1 bg-slate-900 rounded-lg">
-            <button
-              type="button"
-              className={`flex-1 py-2 rounded-md transition-all ${formData.type === 'expense' ? 'bg-rose-500/20 text-rose-400' : 'text-slate-400 hover:text-white'}`}
-              onClick={() => handleChange({ target: { name: 'type', value: 'expense' } })}
-            >
-              Expense
-            </button>
-            <button
-              type="button"
-              className={`flex-1 py-2 rounded-md transition-all ${formData.type === 'income' ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-400 hover:text-white'}`}
-              onClick={() => handleChange({ target: { name: 'type', value: 'income' } })}
-            >
-              Income
-            </button>
-          </div>
+          {!forceType && (
+            <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl">
+              <button
+                type="button"
+                className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${formData.type === 'expense' ? 'bg-rose-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                onClick={() => handleChange({ target: { name: 'type', value: 'expense' } })}
+              >
+                Expense
+              </button>
+              <button
+                type="button"
+                className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${formData.type === 'income' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                onClick={() => handleChange({ target: { name: 'type', value: 'income' } })}
+              >
+                Income
+              </button>
+            </div>
+          )}
 
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">Title</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Description</label>
             <input
               type="text"
               name="title"
@@ -80,12 +88,12 @@ const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
               onChange={handleChange}
               required
               className="w-full"
-              placeholder="e.g., Groceries"
+              placeholder="e.g. Acme Corp Salary or Grocery Store"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">Amount (₹)</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Amount (₹)</label>
             <input
               type="number"
               name="amount"
@@ -101,7 +109,7 @@ const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">Category</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Category</label>
               <select
                 name="category"
                 value={formData.category}
@@ -114,7 +122,7 @@ const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">Date</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Date</label>
               <input
                 type="date"
                 name="date"
@@ -131,7 +139,7 @@ const TransactionForm = ({ onSubmit, editingTransaction, onCancel }) => {
               Cancel
             </button>
             <button type="submit" className="btn-primary flex-1">
-              {editingTransaction ? 'Update' : 'Add'} {formData.type === 'income' ? 'Income' : 'Expense'}
+              {editingTransaction ? 'Update' : 'Add'}
             </button>
           </div>
         </form>

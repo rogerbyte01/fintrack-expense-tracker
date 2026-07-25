@@ -78,10 +78,10 @@ const Transactions = () => {
         <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
       )}
 
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-[var(--border-color)] pb-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-100 mb-2">Transactions</h1>
-          <p className="text-slate-400">Manage your income and expenses.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight">Transactions</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Audit and filter your complete transaction history.</p>
         </div>
         
         <div className="flex items-center gap-3">
@@ -95,15 +95,15 @@ const Transactions = () => {
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-850 rounded-xl mb-6 p-1 flex gap-2 w-fit shadow-sm">
+      <div className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl mb-6 p-1 flex gap-2 w-fit shadow-sm">
         {['all', 'income', 'expense'].map(type => (
           <button
             key={type}
             onClick={() => setTypeFilter(type)}
-            className={`px-4 py-1.5 rounded-lg capitalize text-sm font-medium transition-all ${
+            className={`px-4 py-1.5 rounded-lg capitalize text-sm font-semibold transition-all ${
               typeFilter === type 
-                ? 'bg-indigo-600 text-white shadow-sm' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                ? 'bg-blue-600 text-white shadow-sm' 
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60'
             }`}
           >
             {type}

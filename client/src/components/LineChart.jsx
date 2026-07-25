@@ -1,13 +1,13 @@
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const BarChart = ({ data }) => {
+const LineChart = ({ data }) => {
   if (!data || data.length === 0) {
     return (
       <div className="h-64 flex items-center justify-center text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-900/30 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-sm">
-        No transaction data available
+        No spending trends data available
       </div>
     );
   }
@@ -16,16 +16,15 @@ const BarChart = ({ data }) => {
     labels: data.map(d => d.month),
     datasets: [
       {
-        label: 'Income',
-        data: data.map(d => d.income),
-        backgroundColor: '#2563EB', // Professional Blue
-        borderRadius: 6,
-      },
-      {
-        label: 'Expense',
+        label: 'Monthly Spending',
         data: data.map(d => d.expense),
-        backgroundColor: '#14B8A6', // Teal Accent
-        borderRadius: 6,
+        borderColor: '#EF4444', // Danger color for expense line
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        borderWidth: 3,
+        pointBackgroundColor: '#EF4444',
+        pointHoverRadius: 6,
+        tension: 0.4,
+        fill: true,
       },
     ],
   };
@@ -35,15 +34,7 @@ const BarChart = ({ data }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
-        labels: {
-          color: '#64748b',
-          font: {
-            family: "'Inter', sans-serif",
-            size: 11,
-            weight: '500'
-          }
-        }
+        display: false,
       },
       tooltip: {
         backgroundColor: 'rgba(15, 23, 42, 0.95)',
@@ -53,14 +44,14 @@ const BarChart = ({ data }) => {
         borderWidth: 1,
         padding: 10,
         callbacks: {
-          label: (context) => ` ${context.dataset.label}: ₹${context.raw.toLocaleString()}`
+          label: (context) => ` Spent: ₹${context.raw.toLocaleString()}`
         }
       }
     },
     scales: {
       y: {
         grid: {
-          color: 'rgba(100, 116, 139, 0.1)', // Very faint grid lines
+          color: 'rgba(100, 116, 139, 0.1)',
           drawBorder: false,
         },
         ticks: {
@@ -90,9 +81,9 @@ const BarChart = ({ data }) => {
 
   return (
     <div className="h-64 relative">
-      <Bar data={chartData} options={options} />
+      <Line data={chartData} options={options} />
     </div>
   );
 };
 
-export default BarChart;
+export default LineChart;

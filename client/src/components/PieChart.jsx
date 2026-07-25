@@ -6,7 +6,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const PieChart = ({ data }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center text-slate-400 glass-card">
+      <div className="h-64 flex items-center justify-center text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-900/30 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-sm">
         No expense data for this period
       </div>
     );
@@ -18,17 +18,16 @@ const PieChart = ({ data }) => {
       {
         data: data.map(d => d.total),
         backgroundColor: [
-          '#f43f5e', // rose-500
-          '#f59e0b', // amber-500
-          '#10b981', // emerald-500
-          '#3b82f6', // blue-500
-          '#8b5cf6', // violet-500
-          '#ec4899', // pink-500
-          '#06b6d4', // cyan-500
-          '#64748b', // slate-500
+          '#3B82F6', // Indigo-blue
+          '#14B8A6', // Teal
+          '#EC4899', // Pink
+          '#F59E0B', // Amber
+          '#10B981', // Emerald
+          '#8B5CF6', // Violet
+          '#EF4444', // Red
+          '#64748B', // Slate
         ],
-        borderColor: '#1e293b', // slate-800
-        borderWidth: 2,
+        borderWidth: 0,
         hoverOffset: 4,
       },
     ],
@@ -41,26 +40,28 @@ const PieChart = ({ data }) => {
       legend: {
         position: 'bottom',
         labels: {
-          color: '#cbd5e1', // slate-300
+          color: '#64748b', // Slate 500
           padding: 20,
           font: {
             family: "'Inter', sans-serif",
+            size: 11,
+            weight: '500'
           }
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(15, 23, 42, 0.9)', // slate-900
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
         titleColor: '#f8fafc',
         bodyColor: '#e2e8f0',
-        borderColor: '#334155',
+        borderColor: 'rgba(255,255,255,0.1)',
         borderWidth: 1,
-        padding: 12,
+        padding: 10,
         callbacks: {
           label: (context) => ` ₹${context.raw.toLocaleString()}`
         }
       }
     },
-    cutout: '70%',
+    cutout: '75%',
   };
 
   return (

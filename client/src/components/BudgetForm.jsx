@@ -29,26 +29,26 @@ const BudgetForm = ({ onSubmit, editingBudget, onCancel }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-slate-800 rounded-2xl w-full max-w-sm border border-slate-700 shadow-2xl animate-slide-up">
-        <div className="p-6 border-b border-slate-700 flex justify-between items-center">
-          <h2 className="text-xl font-semibold">
-            {editingBudget ? 'Edit Budget' : 'Set Budget'}
+    <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+      <div className="bg-[var(--bg-card)] rounded-2xl w-full max-w-sm border border-[var(--border-color)] shadow-2xl animate-slide-up text-[var(--text-primary)]">
+        <div className="p-6 border-b border-[var(--border-color)] flex justify-between items-center">
+          <h2 className="text-xl font-bold tracking-tight">
+            {editingBudget ? 'Edit Budget' : 'Set Category Budget'}
           </h2>
-          <button onClick={onCancel} className="text-slate-400 hover:text-white transition-colors">
+          <button onClick={onCancel} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors text-lg">
             ✕
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">Category</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Category</label>
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full"
-              disabled={!!editingBudget} // Don't allow changing category of existing budget easily
+              className="w-full capitalize"
+              disabled={!!editingBudget}
             >
               {expenseCategories.map(cat => (
                 <option key={cat} value={cat}>{cat}</option>
@@ -57,7 +57,7 @@ const BudgetForm = ({ onSubmit, editingBudget, onCancel }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-1">Monthly Limit (₹)</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">Monthly Limit (₹)</label>
             <input
               type="number"
               name="monthlyLimit"
@@ -66,7 +66,7 @@ const BudgetForm = ({ onSubmit, editingBudget, onCancel }) => {
               required
               min="1"
               className="w-full"
-              placeholder="e.g., 5000"
+              placeholder="e.g. 5000"
             />
           </div>
 
@@ -75,7 +75,7 @@ const BudgetForm = ({ onSubmit, editingBudget, onCancel }) => {
               Cancel
             </button>
             <button type="submit" className="btn-primary flex-1">
-              {editingBudget ? 'Update' : 'Save'}
+              Save Budget
             </button>
           </div>
         </form>

@@ -80,13 +80,21 @@ const MonthlySummary = () => {
 
   return (
     <div className="max-w-5xl mx-auto pb-20 md:pb-0">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-[var(--border-color)] pb-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-100 mb-2">Monthly Summary</h1>
-          <p className="text-slate-400">Detailed breakdown of your financial month.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight">Monthly Report</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Audit sheet containing category breakdowns, totals, and budget status.</p>
         </div>
         
-        <MonthPicker selectedMonth={selectedMonth} onChange={setSelectedMonth} />
+        <div className="flex items-center gap-3">
+          <MonthPicker selectedMonth={selectedMonth} onChange={setSelectedMonth} />
+          <button 
+            onClick={() => window.print()}
+            className="btn-secondary text-xs"
+          >
+            Export PDF
+          </button>
+        </div>
       </div>
 
       {loading ? (
