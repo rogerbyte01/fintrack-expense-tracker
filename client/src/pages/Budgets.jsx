@@ -86,8 +86,8 @@ const Budgets = () => {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Budgets</h1>
-          <p className="text-slate-400">Track your spending limits for the current month.</p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Budgets</h1>
+          <p className="text-slate-500">Track your spending limits for the current month.</p>
         </div>
         
         <button 
@@ -111,8 +111,8 @@ const Budgets = () => {
             <circle cx="12" cy="12" r="5" />
             <circle cx="12" cy="12" r="1" />
           </svg>
-          <h3 className="text-lg font-bold text-white mb-1.5">No budgets set</h3>
-          <p className="text-sm text-slate-400 mb-6">Create monthly category limits to keep your spending in check.</p>
+          <h3 className="text-lg font-bold text-slate-800 mb-1.5">No budgets set</h3>
+          <p className="text-sm text-slate-500 mb-6">Create monthly category limits to keep your spending in check.</p>
           <button onClick={() => setShowForm(true)} className="btn-primary">
             Create First Budget
           </button>

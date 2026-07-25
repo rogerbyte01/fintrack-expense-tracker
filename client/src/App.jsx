@@ -7,11 +7,11 @@ import MonthlySummary from './pages/MonthlySummary';
 
 function App() {
   return (
-    <div className="relative flex min-h-screen bg-slate-900 text-white overflow-x-hidden">
+    <div className="relative flex min-h-screen bg-slate-50 text-slate-800 overflow-x-hidden">
       {/* Ambient gradient glow blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-emerald-500/10 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-rose-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '12s' }} />
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-indigo-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-indigo-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '12s' }} />
       </div>
 
       <Sidebar />

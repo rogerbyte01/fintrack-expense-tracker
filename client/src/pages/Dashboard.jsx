@@ -89,8 +89,8 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center h-96">
+        <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-600 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -98,8 +98,8 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-20 md:pb-0">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard Overview</h1>
-        <p className="text-slate-400">Welcome back! Here's your financial summary.</p>
+        <h1 className="text-3xl font-bold text-slate-800 mb-2">Dashboard Overview</h1>
+        <p className="text-slate-500">Welcome back! Here's your financial summary.</p>
       </header>
 
       <SummaryCards 
@@ -110,12 +110,12 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card">
-          <h3 className="text-lg font-medium mb-6 text-slate-200">Expense Breakdown</h3>
+          <h3 className="text-lg font-bold mb-6 text-slate-800 tracking-tight">Expense Breakdown</h3>
           <PieChart data={data.pieData} />
         </div>
         
         <div className="glass-card">
-          <h3 className="text-lg font-medium mb-6 text-slate-200">Income vs Expenses (Last 6 Months)</h3>
+          <h3 className="text-lg font-bold mb-6 text-slate-800 tracking-tight">Income vs Expenses (Last 6 Months)</h3>
           <BarChart data={data.barData} />
         </div>
       </div>
