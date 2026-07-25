@@ -181,9 +181,3 @@ fintrack-expense-tracker/
 
 Deployed on Vercel: [fintrack-expense-tracker-wine.vercel.app](https://fintrack-expense-tracker-wine.vercel.app/)
 
-To deploy your own:
-1. Push to GitHub
-2. Import repo on [vercel.com/new](https://vercel.com/new)
-3. Set build command: `npm run vercel-build`, output: `client/dist`
-4. Add `MONGO_URI` environment variable
-5. Deploy
