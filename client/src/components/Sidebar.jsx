@@ -2,22 +2,60 @@ import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
   const links = [
-    { name: 'Dashboard', path: '/', icon: '📊' },
-    { name: 'Transactions', path: '/transactions', icon: '💸' },
-    { name: 'Budgets', path: '/budgets', icon: '🎯' },
-    { name: 'Monthly Summary', path: '/summary', icon: '📅' },
+    { 
+      name: 'Dashboard', 
+      path: '/', 
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+      )
+    },
+    { 
+      name: 'Transactions', 
+      path: '/transactions', 
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+      )
+    },
+    { 
+      name: 'Budgets', 
+      path: '/budgets', 
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    },
+    { 
+      name: 'Monthly Summary', 
+      path: '/summary', 
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2zm9 0v-4a2 2 0 00-2-2h-2a2 2 0 00-2 2v4a2 2 0 002 2h2a2 2 0 002-2z" />
+        </svg>
+      )
+    },
   ];
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex flex-col w-64 fixed inset-y-0 glass z-50">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">
-            💰 FinTrack
-          </h1>
+      <div className="hidden md:flex flex-col w-64 fixed inset-y-0 glass border-r border-slate-800/80 z-50">
+        <div className="p-6 flex items-center space-x-3">
+          <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <svg className="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">
+            FinTrack
+          </span>
         </div>
-        <nav className="flex-1 px-4 space-y-2 mt-4">
+        
+        <nav className="flex-1 px-4 space-y-2 mt-6">
           {links.map((link) => (
             <NavLink
               key={link.name}
@@ -30,15 +68,15 @@ const Sidebar = () => {
                 }`
               }
             >
-              <span className="text-xl">{link.icon}</span>
-              <span className="font-medium">{link.name}</span>
+              {link.icon}
+              <span className="font-medium text-sm">{link.name}</span>
             </NavLink>
           ))}
         </nav>
       </div>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 glass z-50 p-2 pb-safe border-t border-slate-700">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 glass z-50 p-2 pb-safe border-t border-slate-800/80">
         <nav className="flex justify-around items-center">
           {links.map((link) => (
             <NavLink
@@ -50,7 +88,7 @@ const Sidebar = () => {
                 }`
               }
             >
-              <span className="text-xl mb-1">{link.icon}</span>
+              <div className="mb-1">{link.icon}</div>
               <span className="text-[10px] font-medium">{link.name}</span>
             </NavLink>
           ))}

@@ -105,10 +105,14 @@ const Budgets = () => {
           ))}
         </div>
       ) : budgets.length === 0 ? (
-        <div className="text-center py-16 glass-card border-dashed">
-          <div className="text-4xl mb-4">🎯</div>
-          <h3 className="text-xl font-medium text-white mb-2">No budgets set</h3>
-          <p className="text-slate-400 mb-6">Create budgets to keep your spending in check.</p>
+        <div className="text-center py-16 glass-card border border-dashed border-slate-700/60 rounded-2xl">
+          <svg className="w-12 h-12 text-slate-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="5" />
+            <circle cx="12" cy="12" r="1" />
+          </svg>
+          <h3 className="text-lg font-bold text-white mb-1.5">No budgets set</h3>
+          <p className="text-sm text-slate-400 mb-6">Create monthly category limits to keep your spending in check.</p>
           <button onClick={() => setShowForm(true)} className="btn-primary">
             Create First Budget
           </button>
