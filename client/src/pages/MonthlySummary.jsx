@@ -82,8 +82,8 @@ const MonthlySummary = () => {
     <div className="max-w-5xl mx-auto pb-20 md:pb-0">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Monthly Summary</h1>
-          <p className="text-slate-500">Detailed breakdown of your financial month.</p>
+          <h1 className="text-3xl font-bold text-slate-100 mb-2">Monthly Summary</h1>
+          <p className="text-slate-400">Detailed breakdown of your financial month.</p>
         </div>
         
         <MonthPicker selectedMonth={selectedMonth} onChange={setSelectedMonth} />
@@ -94,7 +94,7 @@ const MonthlySummary = () => {
           <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-600 rounded-full animate-spin"></div>
         </div>
       ) : error ? (
-        <div className="glass-card text-center py-12 text-rose-500">
+        <div className="glass-card text-center py-12 text-rose-400">
           {error}
         </div>
       ) : summary ? (
@@ -108,7 +108,7 @@ const MonthlySummary = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Top Categories */}
             <div className="glass-card">
-              <h3 className="text-lg font-bold mb-6 text-slate-800 tracking-tight">Top Spending Categories</h3>
+              <h3 className="text-lg font-bold mb-6 text-slate-200 tracking-tight">Top Spending Categories</h3>
               
               {summary.topCategories?.length === 0 ? (
                 <p className="text-slate-400 text-center py-8">No expenses this month</p>
@@ -117,10 +117,10 @@ const MonthlySummary = () => {
                   {summary.topCategories?.slice(0, 5).map((cat, i) => (
                     <div key={cat._id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-slate-400 font-mono text-sm">{i + 1}.</span>
-                        <span className="text-slate-700 font-medium text-sm">{cat._id}</span>
+                        <span className="text-slate-500 font-mono text-sm">{i + 1}.</span>
+                        <span className="text-slate-300 font-medium text-sm">{cat._id}</span>
                       </div>
-                      <span className="font-bold text-sm text-rose-600">₹{cat.total.toLocaleString()}</span>
+                      <span className="font-bold text-sm text-rose-400">₹{cat.total.toLocaleString()}</span>
                     </div>
                   ))}
                 </div>
@@ -129,7 +129,7 @@ const MonthlySummary = () => {
 
             {/* Budget Status */}
             <div className="glass-card">
-              <h3 className="text-lg font-bold mb-6 text-slate-800 tracking-tight">Budget Status</h3>
+              <h3 className="text-lg font-bold mb-6 text-slate-200 tracking-tight">Budget Status</h3>
               
               {summary.budgetStatus?.length === 0 ? (
                 <p className="text-slate-400 text-center py-8">No budgets set</p>
@@ -146,12 +146,12 @@ const MonthlySummary = () => {
                     return (
                       <div key={budget.category}>
                         <div className="flex justify-between text-xs font-semibold mb-1">
-                          <span className="text-slate-700">{categoryName}</span>
+                          <span className="text-slate-300">{categoryName}</span>
                           <span className="text-slate-400 font-normal">
-                            <span className="text-slate-800 font-semibold">₹{budget.spent.toLocaleString()}</span> / ₹{budget.monthlyLimit.toLocaleString()}
+                            <span className="text-slate-200 font-semibold">₹{budget.spent.toLocaleString()}</span> / ₹{budget.monthlyLimit.toLocaleString()}
                           </span>
                         </div>
-                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-slate-700/40 rounded-full overflow-hidden">
                           <div 
                             className={`h-full rounded-full ${colorClass}`}
                             style={{ width: `${percent}%` }}

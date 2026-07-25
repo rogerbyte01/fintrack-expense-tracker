@@ -4,10 +4,10 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/90 backdrop-blur-md border-r border-slate-200/80 shadow-sm;
+    @apply bg-slate-950/90 backdrop-blur-md border-r border-slate-900/80 shadow-xl;
   }
   .glass-card {
-    @apply bg-white border border-slate-200/70 rounded-xl p-5 shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-300;
+    @apply bg-slate-900/40 backdrop-blur border border-slate-850 rounded-xl p-5 shadow-lg hover:border-slate-800 transition-colors duration-300;
   }
 }
 
@@ -17,13 +17,13 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100;
+  @apply bg-slate-950;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
+  @apply bg-slate-850 rounded-full;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
+  @apply bg-slate-800;
 }
 
 /* Animations */
@@ -51,12 +51,12 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-700 antialiased;
+  @apply bg-slate-950 text-slate-100 antialiased;
 }
 
 /* Input Styles */
 input, select {
-  @apply bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
+  @apply bg-slate-900 border border-slate-800 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
 }
 
 /* Button Base */
@@ -64,11 +64,11 @@ input, select {
   @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
 }
 .btn-primary {
-  @apply btn bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm hover:shadow;
+  @apply btn bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-950/20;
 }
 .btn-danger {
-  @apply btn bg-rose-600 hover:bg-rose-500 text-white shadow-sm hover:shadow;
+  @apply btn bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-950/20;
 }
 .btn-secondary {
-  @apply btn bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200;
+  @apply btn bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60;
 }

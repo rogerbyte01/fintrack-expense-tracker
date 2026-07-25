@@ -80,8 +80,8 @@ const Transactions = () => {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Transactions</h1>
-          <p className="text-slate-500">Manage your income and expenses.</p>
+          <h1 className="text-3xl font-bold text-slate-100 mb-2">Transactions</h1>
+          <p className="text-slate-400">Manage your income and expenses.</p>
         </div>
         
         <div className="flex items-center gap-3">
@@ -95,7 +95,7 @@ const Transactions = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200/80 rounded-xl mb-6 p-1 flex gap-2 w-fit shadow-sm">
+      <div className="bg-slate-900 border border-slate-850 rounded-xl mb-6 p-1 flex gap-2 w-fit shadow-sm">
         {['all', 'income', 'expense'].map(type => (
           <button
             key={type}
@@ -103,7 +103,7 @@ const Transactions = () => {
             className={`px-4 py-1.5 rounded-lg capitalize text-sm font-medium transition-all ${
               typeFilter === type 
                 ? 'bg-indigo-600 text-white shadow-sm' 
-                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
             }`}
           >
             {type}

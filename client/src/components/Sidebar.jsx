@@ -43,14 +43,14 @@ const Sidebar = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex flex-col w-64 fixed inset-y-0 bg-white border-r border-slate-200 z-50">
+      <div className="hidden md:flex flex-col w-64 fixed inset-y-0 bg-slate-950 border-r border-slate-900 z-50">
         <div className="p-6 flex items-center space-x-3">
-          <div className="p-2.5 rounded-xl bg-indigo-50 border border-indigo-100">
-            <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+          <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
+            <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400">
+          <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-200">
             FinTrack
           </span>
         </div>
@@ -63,8 +63,8 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 border ${
                   isActive
-                    ? 'bg-indigo-50/70 text-indigo-600 border-indigo-100'
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 border-transparent'
+                    ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+                    : 'text-slate-400 hover:bg-slate-900/50 hover:text-slate-200 border-transparent'
                 }`
               }
             >
@@ -76,7 +76,7 @@ const Sidebar = () => {
       </div>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 p-2 pb-safe shadow-lg">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-900 z-50 p-2 pb-safe shadow-lg">
         <nav className="flex justify-around items-center">
           {links.map((link) => (
             <NavLink
@@ -84,7 +84,7 @@ const Sidebar = () => {
               to={link.path}
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center p-2 rounded-lg transition-colors ${
-                  isActive ? 'text-indigo-600' : 'text-slate-400'
+                  isActive ? 'text-indigo-400' : 'text-slate-500'
                 }`
               }
             >
