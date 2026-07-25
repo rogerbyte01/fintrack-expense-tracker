@@ -47,15 +47,76 @@ router.get('/', async (req, res) => {
       { $group: { _id: { $toLower: '$category' }, spent: { $sum: '$amount' } } }
     ]);
 
+    // Calculate previous month's spending for rollover
+    const prevStartDate = new Date(startDate);
+    prevStartDate.setMonth(prevStartDate.getMonth() - 1);
+
+    const prevCategorySpending = await Transaction.aggregate([
+      { $match: { date: { $gte: prevStartDate, $lt: startDate }, type: 'expense' } },
+      { $group: { _id: { $toLower: '$category' }, spent: { $sum: '$amount' } } }
+    ]);
+
+    // Calculate 3-month lookback average (lookbackStartDate to startDate)
+    const lookbackStartDate = new Date(startDate);
+    lookbackStartDate.setMonth(lookbackStartDate.getMonth() - 3);
+
+    const lookbackSpending = await Transaction.aggregate([
+      { $match: { date: { $gte: lookbackStartDate, $lt: startDate }, type: 'expense' } },
+      { $group: { _id: { $toLower: '$category' }, total: { $sum: '$amount' } } }
+    ]);
+
     const budgets = await Budget.find();
     
     const budgetStatus = budgets.map(budget => {
       const spending = categorySpending.find(c => c._id === budget.category);
+      const spent = spending ? spending.spent : 0;
+
+      let effectiveLimit = budget.monthlyLimit;
+      let prevUnused = 0;
+
+      if (budget.rolloverEnabled) {
+        const prevSpending = prevCategorySpending.find(c => c._id === budget.category);
+        const prevSpent = prevSpending ? prevSpending.spent : 0;
+        prevUnused = Math.max(budget.monthlyLimit - prevSpent, 0);
+        effectiveLimit += prevUnused;
+      }
+
       return {
         category: budget.category,
-        monthlyLimit: budget.monthlyLimit,
-        spent: spending ? spending.spent : 0
+        monthlyLimit: effectiveLimit,
+        spent,
+        originalLimit: budget.monthlyLimit,
+        rolloverEnabled: budget.rolloverEnabled,
+        prevUnused
       };
+    });
+
+    // Compute Spending Insights
+    const insights = [];
+    categorySpending.forEach(current => {
+      const catKey = current._id;
+      const currentSpend = current.spent;
+
+      const lookback = lookbackSpending.find(l => l._id === catKey);
+      const totalLookback = lookback ? lookback.total : 0;
+      const averageSpend = totalLookback / 3;
+
+      if (averageSpend > 0) {
+        const ratio = currentSpend / averageSpend;
+        if (ratio > 1.30) {
+          const percentAbove = Math.round((ratio - 1) * 100);
+          
+          const matchingBudget = budgets.find(b => b.category === catKey);
+          const displayCategory = matchingBudget ? matchingBudget.category : catKey;
+
+          insights.push({
+            category: displayCategory,
+            currentSpend,
+            averageSpend,
+            percentAbove
+          });
+        }
+      }
     });
 
     res.json({
@@ -63,7 +124,8 @@ router.get('/', async (req, res) => {
       totalExpenses,
       savings,
       topCategories,
-      budgetStatus
+      budgetStatus,
+      insights
     });
 
   } catch (error) {

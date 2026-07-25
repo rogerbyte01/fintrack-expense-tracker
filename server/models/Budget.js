@@ -12,6 +12,10 @@ const budgetSchema = new mongoose.Schema({
     type: Number,
     required: true,
     min: 1
+  },
+  rolloverEnabled: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

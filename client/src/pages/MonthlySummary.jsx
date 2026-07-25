@@ -60,11 +60,31 @@ const MonthlySummary = () => {
         .map(cat => ({ _id: cat, total: catMap[cat] }))
         .sort((a, b) => b.total - a.total);
 
-      const budgetStatus = bRes.data.map(b => ({
-        category: b.category,
-        monthlyLimit: b.monthlyLimit,
-        spent: catMap[b.category] || 0
-      }));
+      // Calculate previous month for rollover fallback
+      const [year, monthVal] = selectedMonth.split('-');
+      const prevDate = new Date(parseInt(year), parseInt(monthVal) - 2, 1);
+      const prevMonthStr = prevDate.toISOString().slice(0, 7);
+
+      const prevMonthTxs = txRes.data.filter(tx => tx.date.startsWith(prevMonthStr) && tx.type === 'expense');
+      const prevCatMap = {};
+      prevMonthTxs.forEach(tx => {
+        const key = tx.category.toLowerCase();
+        prevCatMap[key] = (prevCatMap[key] || 0) + tx.amount;
+      });
+
+      const budgetStatus = bRes.data.map(b => {
+        let effectiveLimit = b.monthlyLimit;
+        if (b.rolloverEnabled) {
+          const prevSpent = prevCatMap[b.category.toLowerCase()] || 0;
+          const prevUnused = Math.max(b.monthlyLimit - prevSpent, 0);
+          effectiveLimit += prevUnused;
+        }
+        return {
+          category: b.category,
+          monthlyLimit: effectiveLimit,
+          spent: catMap[b.category] || 0
+        };
+      });
 
       setSummary({
         totalIncome,

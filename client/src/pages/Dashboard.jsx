@@ -8,6 +8,7 @@ import DoughnutChart from '../components/DoughnutChart';
 import TransactionForm from '../components/TransactionForm';
 import BudgetForm from '../components/BudgetForm';
 import Toast from '../components/Toast';
+import InsightBanner from '../components/InsightBanner';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -26,28 +27,29 @@ const Dashboard = () => {
     pieData: [],
     barData: [],
     lineData: [],
-    budgets: []
+    budgets: [],
+    insights: []
   });
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [txRes, bRes] = await Promise.all([
+      const currentMonthStr = new Date().toISOString().slice(0, 7);
+      const [txRes, bRes, summaryRes] = await Promise.all([
         api.get('/transactions'),
-        api.get('/budgets')
+        api.get('/budgets'),
+        api.get(`/summary?month=${currentMonthStr}`)
       ]);
 
       const txs = txRes.data;
       const budgets = bRes.data;
+      const summary = summaryRes.data;
 
       // Group totals
       let totalIncome = 0;
       let totalExpenses = 0;
       const categoryMap = {};
       const monthMap = {};
-
-      // Current month string
-      const currentMonthStr = new Date().toISOString().slice(0, 7);
 
       txs.forEach(tx => {
         if (tx.type === 'income') {
@@ -67,22 +69,19 @@ const Dashboard = () => {
         else monthMap[monthKey].expense += tx.amount;
       });
 
-      // Map spent in budgets
-      const budgetMap = {};
-      txs.forEach(tx => {
-        if (tx.type === 'expense' && tx.date.startsWith(currentMonthStr)) {
-          const key = tx.category.toLowerCase();
-          budgetMap[key] = (budgetMap[key] || 0) + tx.amount;
-        }
-      });
+      // Use budgetStatus from summary to automatically reflect rollover calculations
+      const budgetsWithSpent = summary.budgetStatus || [];
 
-      const budgetsWithSpent = budgets.map(b => ({
-        ...b,
-        spent: budgetMap[b.category] || 0
-      }));
+      let finalBudgets = budgetsWithSpent;
+      if (finalBudgets.length === 0) {
+        finalBudgets = budgets.map(b => ({
+          ...b,
+          spent: 0
+        }));
+      }
 
-      const totalBudgetLimit = budgetsWithSpent.reduce((acc, b) => acc + b.monthlyLimit, 0);
-      const totalBudgetSpent = budgetsWithSpent.reduce((acc, b) => acc + b.spent, 0);
+      const totalBudgetLimit = finalBudgets.reduce((acc, b) => acc + (b.monthlyLimit || 0), 0);
+      const totalBudgetSpent = finalBudgets.reduce((acc, b) => acc + (b.spent || 0), 0);
       const budgetRemaining = Math.max(totalBudgetLimit - totalBudgetSpent, 0);
 
       // Pie chart
@@ -115,7 +114,8 @@ const Dashboard = () => {
         pieData,
         barData: formattedTrendData,
         lineData: formattedTrendData,
-        budgets: budgetsWithSpent
+        budgets: finalBudgets,
+        insights: summary.insights || []
       });
 
     } catch (err) {
@@ -236,6 +236,9 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
+
+      {/* Insight Banner */}
+      <InsightBanner insights={dashboardData.insights} />
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">

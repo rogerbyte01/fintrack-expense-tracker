@@ -6,13 +6,15 @@ const BudgetForm = ({ onSubmit, editingBudget, onCancel }) => {
   const [formData, setFormData] = useState({
     category: expenseCategories[0],
     monthlyLimit: '',
+    rolloverEnabled: false
   });
 
   useEffect(() => {
     if (editingBudget) {
       setFormData({
         category: editingBudget.category,
-        monthlyLimit: editingBudget.monthlyLimit
+        monthlyLimit: editingBudget.originalLimit !== undefined ? editingBudget.originalLimit : editingBudget.monthlyLimit,
+        rolloverEnabled: editingBudget.rolloverEnabled || false
       });
     }
   }, [editingBudget]);
@@ -68,6 +70,21 @@ const BudgetForm = ({ onSubmit, editingBudget, onCancel }) => {
               className="w-full"
               placeholder="e.g. 5000"
             />
+          </div>
+
+          {/* Budget Rollover Toggle */}
+          <div className="flex items-start gap-2.5 py-1.5">
+            <input
+              type="checkbox"
+              id="rolloverEnabled"
+              name="rolloverEnabled"
+              checked={formData.rolloverEnabled}
+              onChange={(e) => setFormData(prev => ({ ...prev, rolloverEnabled: e.target.checked }))}
+              className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500/30 cursor-pointer mt-0.5"
+            />
+            <label htmlFor="rolloverEnabled" className="text-xs font-semibold text-slate-500 dark:text-slate-400 select-none cursor-pointer leading-relaxed">
+              Enable Budget Rollover (Rollover unused limits from previous month)
+            </label>
           </div>
 
           <div className="pt-4 flex gap-3">

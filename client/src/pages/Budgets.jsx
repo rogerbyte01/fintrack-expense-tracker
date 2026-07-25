@@ -14,7 +14,6 @@ const Budgets = () => {
   const fetchBudgetsData = async () => {
     try {
       setLoading(true);
-      // We need both budgets and current month's transactions to calculate 'spent'
       const [budgetsRes, txRes] = await Promise.all([
         api.get('/budgets'),
         api.get('/transactions')
@@ -22,20 +21,43 @@ const Budgets = () => {
 
       const currentMonthStr = new Date().toISOString().slice(0, 7);
       
-      // Calculate spent per category for current month (lowercase keys to match budget categories)
+      const now = new Date();
+      const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const prevMonthStr = prevMonth.toISOString().slice(0, 7);
+
+      // Calculate spent maps
       const spentMap = {};
+      const prevSpentMap = {};
+
       txRes.data.forEach(tx => {
-        if (tx.type === 'expense' && tx.date.startsWith(currentMonthStr)) {
-          const key = tx.category.toLowerCase();
-          spentMap[key] = (spentMap[key] || 0) + tx.amount;
+        if (tx.type === 'expense') {
+          const txMonthStr = tx.date.slice(0, 7);
+          if (txMonthStr === currentMonthStr) {
+            const key = tx.category.toLowerCase();
+            spentMap[key] = (spentMap[key] || 0) + tx.amount;
+          } else if (txMonthStr === prevMonthStr) {
+            const key = tx.category.toLowerCase();
+            prevSpentMap[key] = (prevSpentMap[key] || 0) + tx.amount;
+          }
         }
       });
 
-      // Combine budget data with spent data
-      const budgetsWithSpent = budgetsRes.data.map(b => ({
-        ...b,
-        spent: spentMap[b.category] || 0
-      }));
+      // Combine budget data with spent and rollover effective limits
+      const budgetsWithSpent = budgetsRes.data.map(b => {
+        const spent = spentMap[b.category] || 0;
+        let effectiveLimit = b.monthlyLimit;
+        if (b.rolloverEnabled) {
+          const prevSpent = prevSpentMap[b.category] || 0;
+          const prevUnused = Math.max(b.monthlyLimit - prevSpent, 0);
+          effectiveLimit += prevUnused;
+        }
+        return {
+          ...b,
+          spent,
+          monthlyLimit: effectiveLimit,
+          originalLimit: b.monthlyLimit
+        };
+      });
 
       setBudgets(budgetsWithSpent);
     } catch (err) {

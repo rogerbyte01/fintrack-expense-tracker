@@ -5,7 +5,8 @@ const Budget = require('../models/Budget');
 
 const validateBudget = [
   body('category').isString().trim().notEmpty().withMessage('Category is required'),
-  body('monthlyLimit').isFloat({ min: 1 }).withMessage('Monthly limit must be a positive number')
+  body('monthlyLimit').isFloat({ min: 1 }).withMessage('Monthly limit must be a positive number'),
+  body('rolloverEnabled').optional().isBoolean().withMessage('Rollover enabled must be a boolean')
 ];
 
 const handleValidationErrors = (req, res, next) => {
@@ -29,15 +30,22 @@ router.get('/', async (req, res) => {
 // POST / - Create budget
 router.post('/', validateBudget, handleValidationErrors, async (req, res) => {
   try {
-    const { category, monthlyLimit } = req.body;
+    const { category, monthlyLimit, rolloverEnabled } = req.body;
     const categoryLower = category.toLowerCase();
 
     let budget = await Budget.findOne({ category: categoryLower });
     if (budget) {
       budget.monthlyLimit = monthlyLimit;
+      if (rolloverEnabled !== undefined) {
+        budget.rolloverEnabled = rolloverEnabled;
+      }
       await budget.save();
     } else {
-      budget = new Budget({ category: categoryLower, monthlyLimit });
+      budget = new Budget({ 
+        category: categoryLower, 
+        monthlyLimit, 
+        rolloverEnabled: rolloverEnabled !== undefined ? rolloverEnabled : false 
+      });
       await budget.save();
     }
     res.status(201).json(budget);
@@ -47,9 +55,16 @@ router.post('/', validateBudget, handleValidationErrors, async (req, res) => {
 });
 
 // PUT /:id - Update budget
-router.put('/:id', [body('monthlyLimit').isFloat({ min: 1 }).withMessage('Monthly limit must be a positive number')], handleValidationErrors, async (req, res) => {
+router.put('/:id', [
+  body('monthlyLimit').optional().isFloat({ min: 1 }).withMessage('Monthly limit must be a positive number'),
+  body('rolloverEnabled').optional().isBoolean().withMessage('Rollover enabled must be a boolean')
+], handleValidationErrors, async (req, res) => {
   try {
-    const budget = await Budget.findByIdAndUpdate(req.params.id, { monthlyLimit: req.body.monthlyLimit }, { new: true, runValidators: true });
+    const updateObj = {};
+    if (req.body.monthlyLimit !== undefined) updateObj.monthlyLimit = req.body.monthlyLimit;
+    if (req.body.rolloverEnabled !== undefined) updateObj.rolloverEnabled = req.body.rolloverEnabled;
+
+    const budget = await Budget.findByIdAndUpdate(req.params.id, updateObj, { new: true, runValidators: true });
     if (!budget) {
       return res.status(404).json({ message: 'Budget not found' });
     }
