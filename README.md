@@ -102,20 +102,28 @@ fintrack-expense-tracker/
 │   │   ├── api/api.js         # Axios instance
 │   │   ├── components/        # Reusable UI components
 │   │   │   ├── Sidebar.jsx
+│   │   │   ├── Navbar.jsx
 │   │   │   ├── SummaryCards.jsx
 │   │   │   ├── TransactionForm.jsx
 │   │   │   ├── TransactionList.jsx
 │   │   │   ├── PieChart.jsx
 │   │   │   ├── BarChart.jsx
+│   │   │   ├── LineChart.jsx
+│   │   │   ├── DoughnutChart.jsx
 │   │   │   ├── BudgetCard.jsx
 │   │   │   ├── BudgetForm.jsx
 │   │   │   ├── MonthPicker.jsx
 │   │   │   └── Toast.jsx
 │   │   ├── pages/             # Page-level components
 │   │   │   ├── Dashboard.jsx
-│   │   │   ├── Transactions.jsx
+│   │   │   ├── Income.jsx
+│   │   │   ├── Expenses.jsx
 │   │   │   ├── Budgets.jsx
-│   │   │   └── MonthlySummary.jsx
+│   │   │   ├── MonthlySummary.jsx
+│   │   │   ├── Analytics.jsx
+│   │   │   ├── Transactions.jsx
+│   │   │   ├── Profile.jsx
+│   │   │   └── Settings.jsx
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css

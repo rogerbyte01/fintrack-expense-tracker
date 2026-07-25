@@ -10,7 +10,7 @@ This document covers the complete technical specifications, architecture design,
 3. [System Architecture & Data Flow](#3-system-architecture--data-flow)
 4. [Database Schemas & Models](#4-database-schemas--models)
 5. [Backend API Specifications](#5-backend-api-specifications)
-6. [Frontend UI & Design System](#6-frontend-ui--design-system)
+6. [Frontend UI & SaaS Design System](#6-frontend-ui--saas-design-system)
 7. [Step-by-Step Implementation (How it was built)](#7-step-by-step-implementation-how-it-was-built)
 8. [Impact, Effects & Outcomes of having the App](#8-impact-effects--outcomes-of-having-the-app)
 9. [Interview & Viva Questions & Answers](#9-interview--viva-questions--answers)
@@ -22,13 +22,13 @@ This document covers the complete technical specifications, architecture design,
 
 Managing personal finances is a common challenge due to manual tracking friction and a lack of real-time visual feedback on spending behaviors.
 
-**FinTrack** is a personal finance tracker that simplifies money management by allowing users to log transaction details (income and expenses), set category budget limits, visualize their spending, and receive instant alerts when they approach or exceed their limits.
+**FinTrack** is an enterprise-grade personal finance dashboard and expense tracker designed to simplify money management. The application allows users to log transactions (income and expenses), set category budget limits, visualize spending across multiple charts, track budget utilization, and access detailed monthly audit summaries.
 
 ### Core Goals
-- **Real-Time Visibility**: Summary cards showing income, expenses, and net balance.
-- **Spending Analytics**: Categorized doughnut charts and 6-month historical bar charts.
-- **Budgeting Boundaries**: Visual progress bars mapping spent amounts against limits with alerts.
-- **Monthly Audits**: Breakdown of monthly income, expenses, savings, and top 5 categories.
+- **Real-Time Visibility**: Summary metrics showing total balance, monthly income, expenses, savings, and remaining budget limit.
+- **Spending Analytics**: 4-chart visualization suite (Pie chart for categories, Bar chart for comparison trends, Line chart for velocity over time, Doughnut chart for budget limits).
+- **Budgeting Boundaries**: Visual progress alerts mapping actual spent values against category limits.
+- **Custom Navigations**: Dedicated views for Income, Expenses, Budgets, Reports, Analytics, Transactions, Settings, and Profile.
 
 ---
 
@@ -54,9 +54,10 @@ Managing personal finances is a common challenge due to manual tracking friction
 ```
 +-------------------------------------------------------------+
 |                     Client (Vite React SPA)                 |
-|   - App.jsx Layout                                          |
-|   - Pages (Dashboard, Transactions, Budgets, Summary)     |
-|   - Charts (PieChart, BarChart) & Components               |
+|   - App.jsx Layout Wrapper with Dark Theme Context          |
+|   - Left Navigation Sidebar & Top Navbar Controls           |
+|   - Subpages: Dashboard, Income, Expenses, Budgets, Reports,|
+|               Analytics, Transactions, Profile, Settings   |
 +-------------------------------------------------------------+
                                 │
                                 │ Axios Requests (/api/*)
@@ -135,16 +136,22 @@ Stores monthly limits for expense categories:
 
 ---
 
-## 6. Frontend UI & Design System
+## 6. Frontend UI & SaaS Design System
 
-The application uses a **Clean Light Mode** theme built with Tailwind CSS:
+The application utilizes a premium, corporate SaaS design inspired by products like Stripe and Linear:
 
-- **Primary Colors**: Indigo accent (`bg-indigo-600` / `text-indigo-600`) for primary actions and active states. Slate gray (`bg-slate-50` / `text-slate-800`) for background and text.
-- **Alert Colors**: Emerald for income, Rose for expenses/over-budget warning, Amber for nearing-budget warning.
-- **Visual Elements**: Clean grid lines, custom SVG icons, and a card design with thin borders (`border-slate-200/70`).
-- **Responsive Layout**:
-  - **Desktop**: Left navigation sidebar.
-  - **Mobile**: Floating bottom navigation bar.
+- **Theme & Colors**:
+  - **Light Mode (Default)**: Background `#F8FAFC`, Cards `#FFFFFF`, Text `#1E293B`, Borders `#E2E8F0`.
+  - **Dark Mode**: Background `#0B0F19`, Cards `#151C2C`, Text `#F8FAFC`, Borders `#1E293B`.
+  - **Accent & Alerts**: Professional Blue (`#2563EB`) as primary, Teal (`#14B8A6`) as secondary accent, Success Emerald (`#22C55E`), Warning Amber (`#F59E0B`), and Danger Rose (`#EF4444`).
+- **Typography & Layout**:
+  - Uses the **Inter** font family with bold headings and medium body weights.
+  - Incorporates subtle ambient gradient blobs in the background.
+  - Utilizes custom glassmorphism styling (`glass-card`, `glass-nav`, `glass-sidebar`) with delicate borders.
+- **Responsive Navigation**:
+  - **Desktop**: Left navigation sidebar featuring logo and divided layout categories (Menu vs Account).
+  - **Mobile**: Sticky bottom navigation bar optimized for viewport bounds.
+  - **Top Navbar**: Includes profile avatar initials sync, mock notification bell dropdown, active date stamp, search bar, and light/dark theme toggle.
 
 ---
 
@@ -162,18 +169,19 @@ The application uses a **Clean Light Mode** theme built with Tailwind CSS:
 - Wrote connection pooling logic in `config/db.js` to cache connections for serverless execution.
 
 ### Milestone 3: React Routing & Global Styles
-- Configured client routes (`/`, `/transactions`, `/budgets`, `/summary`) in `App.jsx`.
-- Developed `Sidebar` component supporting responsive desktop-sidebar and mobile-bottom-nav states using custom SVGs.
+- Configured client routes (`/`, `/income`, `/expenses`, `/budgets`, `/reports`, `/analytics`, `/transactions`, `/profile`, `/settings`) in `App.jsx`.
+- Developed `Sidebar` component supporting responsive desktop-sidebar and mobile-bottom-nav states using custom inline SVGs.
 - Established global custom styling classes (light theme cards, animations, inputs, buttons) in `index.css`.
 
 ### Milestone 4: Page Construction & Integration
 - Developed `Dashboard.jsx`, embedding `SummaryCards`, `PieChart`, and `BarChart` powered by aggregated data.
-- Built `Transactions.jsx` showing filtering tabs and transactional listing with full add/edit/delete modals.
+- Built `Income.jsx` and `Expenses.jsx` pages containing Stripe-style lists, filter dropdowns, and create forms.
 - Created `Budgets.jsx` displaying progress bars and threshold limits based on current-month spending.
-- Completed `MonthlySummary.jsx` aggregating the financial month and ranking top expense categories.
+- Completed `MonthlySummary.jsx` aggregating the financial month, ranking top expense categories, and featuring a PDF export.
+- Set up `Profile.jsx` and `Settings.jsx` for client configurations.
 
 ### Milestone 5: Git & Deployment Pipeline
-- Initialized Git, verified files in `.gitignore`, and made 12 commits representing natural progress stages.
+- Initialized Git, verified files in `.gitignore`, and committed milestones.
 - Linked to GitHub and set up Vercel deployment with serverless routing rules in `vercel.json` and a monorepo build script.
 
 ---
