@@ -1,64 +1,62 @@
-# 💰 FinTrack — Expense Tracker & Finance Manager
+# FinTrack — Expense Tracker
 
-A full-stack **MERN** expense tracker application with dashboard visualizations, budget management, and monthly summaries.
-
-![FinTrack Banner](https://img.shields.io/badge/FinTrack-Expense%20Tracker-10b981?style=for-the-badge&logo=react&logoColor=white)
+A full-stack MERN (MongoDB, Express, React, Node.js) web application for tracking personal income and expenses, setting category budgets, and viewing monthly financial summaries with charts.
 
 ---
 
-## ✨ Features
+## Features
 
-- 📊 **Dashboard** — Overview with total income, expenses, balance summary cards
-- 💸 **Transactions** — Add, edit, delete income/expense transactions with categories
-- 🎯 **Budgets** — Set monthly spending limits per category with progress bars & warnings
-- 📅 **Monthly Summary** — Detailed breakdown of any month's financials with top spending categories
-- 📈 **Charts** — Doughnut chart for expense breakdown, bar chart for income vs expenses over time
-- 🔍 **Filtering** — Filter transactions by month and type (income/expense)
-- 📱 **Responsive** — Desktop sidebar + mobile bottom navigation
-- 🎨 **Premium Dark UI** — Glassmorphism, smooth animations, emerald/rose color system
+- **Dashboard** — View total income, total expenses, and net balance at a glance
+- **Transactions** — Add, edit, and delete income/expense entries with category and date
+- **Budgets** — Set monthly spending limits per category; progress bars show how much is spent vs the limit
+- **Monthly Summary** — Pick any month to see income vs expenses vs savings, plus top spending categories
+- **Charts** — Doughnut chart for category-wise expense breakdown, bar chart for income vs expense trends
+- **Filters** — Filter transactions by month and type (income/expense)
+- **Responsive** — Works on desktop and mobile
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| **Frontend** | React 18, Vite, Tailwind CSS 3, Chart.js |
-| **Backend** | Node.js, Express.js |
-| **Database** | MongoDB with Mongoose |
-| **HTTP Client** | Axios |
-| **Validation** | express-validator |
+| Frontend | React 18, Vite, Tailwind CSS, Chart.js (react-chartjs-2) |
+| Backend | Node.js, Express.js |
+| Database | MongoDB (Mongoose ODM) |
+| HTTP Client | Axios |
+| Validation | express-validator |
+| Deployment | Vercel |
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [MongoDB Atlas](https://www.mongodb.com/atlas) account (or local MongoDB)
+- Node.js (v18+)
+- MongoDB Atlas account or local MongoDB
 - Git
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/fintrack.git
-cd fintrack
+git clone https://github.com/rogerbyte01/fintrack-expense-tracker.git
+cd fintrack-expense-tracker
 ```
 
-### 2. Set Up the Backend
+### 2. Setup Backend
 
 ```bash
 cd server
 cp .env.example .env
-# Edit .env with your MongoDB URI
+# Edit .env and add your MongoDB connection string
 npm install
 npm run dev
 ```
 
-The API will start on `http://localhost:5000`.
+Server runs on `http://localhost:5000`.
 
-### 3. Set Up the Frontend
+### 3. Setup Frontend
 
 ```bash
 cd client
@@ -66,135 +64,118 @@ npm install
 npm run dev
 ```
 
-The app will open at `http://localhost:5173`.
+App opens at `http://localhost:5173`.
 
-### 4. Running Both Concurrently
+### 4. Run Both Together
 
-Open **two terminals** and run:
+Open two terminals:
 
 ```bash
-# Terminal 1 — Backend
+# Terminal 1
 cd server && npm run dev
 
-# Terminal 2 — Frontend
+# Terminal 2
 cd client && npm run dev
 ```
 
-> **Tip**: The Vite dev server is configured to proxy `/api` requests to `http://localhost:5000`, so no CORS issues in development.
+The Vite dev server proxies `/api` requests to the backend, so no CORS setup needed.
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
-### Server (`/server/.env`)
+### Server (`server/.env`)
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | `5000` |
-| `MONGO_URI` | MongoDB connection string | — |
-
-### Client
-
-No environment variables required — the Vite proxy handles API routing automatically.
+| Variable | Description |
+|----------|-------------|
+| `PORT` | Server port (default: 5000) |
+| `MONGO_URI` | MongoDB connection string |
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-fintrack/
-├── client/                    # React frontend (Vite)
-│   ├── public/
+fintrack-expense-tracker/
+├── client/                    # React frontend
 │   ├── src/
-│   │   ├── api/
-│   │   │   └── api.js         # Axios instance with interceptors
-│   │   ├── components/
-│   │   │   ├── Sidebar.jsx    # Navigation sidebar / mobile bottom nav
+│   │   ├── api/api.js         # Axios instance
+│   │   ├── components/        # Reusable UI components
+│   │   │   ├── Sidebar.jsx
 │   │   │   ├── SummaryCards.jsx
 │   │   │   ├── TransactionForm.jsx
 │   │   │   ├── TransactionList.jsx
-│   │   │   ├── PieChart.jsx   # Chart.js doughnut chart
-│   │   │   ├── BarChart.jsx   # Chart.js bar chart
-│   │   │   ├── BudgetCard.jsx # Budget progress card
+│   │   │   ├── PieChart.jsx
+│   │   │   ├── BarChart.jsx
+│   │   │   ├── BudgetCard.jsx
 │   │   │   ├── BudgetForm.jsx
 │   │   │   ├── MonthPicker.jsx
-│   │   │   └── Toast.jsx      # Notification component
-│   │   ├── pages/
+│   │   │   └── Toast.jsx
+│   │   ├── pages/             # Page-level components
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── Transactions.jsx
 │   │   │   ├── Budgets.jsx
 │   │   │   └── MonthlySummary.jsx
-│   │   ├── App.jsx            # Root component with routes
-│   │   ├── main.jsx           # Entry point
-│   │   └── index.css          # Global styles (Tailwind)
-│   ├── index.html
-│   ├── tailwind.config.js
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
 │   ├── vite.config.js
 │   └── package.json
 │
 ├── server/                    # Express backend
-│   ├── config/
-│   │   └── db.js              # MongoDB connection
+│   ├── config/db.js           # MongoDB connection
 │   ├── models/
-│   │   ├── Transaction.js     # Transaction schema
-│   │   └── Budget.js          # Budget schema
+│   │   ├── Transaction.js
+│   │   └── Budget.js
 │   ├── routes/
-│   │   ├── transactions.js    # Transaction CRUD
-│   │   ├── budgets.js         # Budget CRUD
-│   │   └── summary.js         # Monthly aggregation
-│   ├── server.js              # Entry point
+│   │   ├── transactions.js    # CRUD endpoints
+│   │   ├── budgets.js         # Budget endpoints
+│   │   └── summary.js        # Monthly aggregation
+│   ├── server.js
 │   └── package.json
 │
-├── .gitignore
-└── README.md
+├── api/index.js               # Vercel serverless entry
+├── vercel.json                # Deployment config
+└── package.json               # Root build scripts
 ```
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
-### Transactions (`/api/transactions`)
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/` | List transactions (filter: `?month=YYYY-MM`, `?type=`, `?category=`) |
-| POST | `/` | Create transaction |
-| PUT | `/:id` | Update transaction |
-| DELETE | `/:id` | Delete transaction |
-
-### Budgets (`/api/budgets`)
+### Transactions — `/api/transactions`
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/` | List all budgets |
-| POST | `/` | Create/upsert budget |
+| GET | `/` | Get all transactions (supports `?month=YYYY-MM`, `?type=`, `?category=`) |
+| POST | `/` | Create a new transaction |
+| PUT | `/:id` | Update a transaction |
+| DELETE | `/:id` | Delete a transaction |
+
+### Budgets — `/api/budgets`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Get all budgets |
+| POST | `/` | Create or update a budget (upsert by category) |
 | PUT | `/:id` | Update budget limit |
-| DELETE | `/:id` | Delete budget |
+| DELETE | `/:id` | Delete a budget |
 
-### Summary (`/api/summary`)
+### Summary — `/api/summary`
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/?month=YYYY-MM` | Monthly summary with income, expenses, savings, top categories, budget status |
+| GET | `/?month=YYYY-MM` | Get monthly totals, savings, top categories, budget status |
 
 ---
 
-## 🎨 Design
+## Deployment
 
-- **Theme**: Dark (slate-900 base) with glassmorphism cards
-- **Accent Colors**: Emerald (income), Rose (expenses), Amber (warnings)
-- **Typography**: Inter (Google Fonts)
-- **Effects**: Backdrop blur, gradient accents, staggered slide-up animations
-- **Responsive**: Sidebar on desktop, bottom navigation on mobile
+Deployed on Vercel: [fintrack-expense-tracker-wine.vercel.app](https://fintrack-expense-tracker-wine.vercel.app/)
 
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<p align="center">
-  Built with ❤️ for personal finance management
-</p>
+To deploy your own:
+1. Push to GitHub
+2. Import repo on [vercel.com/new](https://vercel.com/new)
+3. Set build command: `npm run vercel-build`, output: `client/dist`
+4. Add `MONGO_URI` environment variable
+5. Deploy
